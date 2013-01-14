@@ -86,6 +86,7 @@ $(function(){
     add: function(address){
       // 引数のモデルからAddressViewを作成
       var view = new AddressView({model: address});
+      this.$('#list').append(view.render().el)
     },
     addAll: function(){
       Addresses.each(this.add);
@@ -94,15 +95,17 @@ $(function(){
       if(e.keyCode === 13){
         // Enterキーが押されたらモデルを追加する
         Addresses.create({name: this.input.val()});
+        this.input.val('');
       }
     },
     deleteAll: function(e){
       var address;
-      while (address = Address.first()){
+      while (address = Addresses.first()){
         address.destroy();
       }
     }
   });
+
   // インスタンス生成
   var App = new AppView;
-})
+});
