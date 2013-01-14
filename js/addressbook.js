@@ -68,4 +68,41 @@ $(function(){
     }
   });
 
+  // 一覧用View作成
+  var AppView = Backbone.View.extend({
+    el: $('#app'),
+    events: {
+      'keypress #new-address': 'keyPress',
+      'click #delete-all': 'deleteAll'
+    },
+    initialize: function(){
+      this.input = this.$('#new-address');
+      // コレクションへのバインド
+      Addresses.bind('add', this.add, this);
+      Addresses.bind('reset', this.addAll, this);
+      // モデル一覧取得
+      Addresses.fetch();
+    },
+    add: function(address){
+      // 引数のモデルからAddressViewを作成
+      var view = new AddressView({model: address});
+    },
+    addAll: function(){
+      Addresses.each(this.add);
+    },
+    keyPress: function(e){
+      if(e.keyCode === 13){
+        // Enterキーが押されたらモデルを追加する
+        Addresses.create({name: this.input.val()});
+      }
+    },
+    deleteAll: function(e){
+      var address;
+      while (address = Address.first()){
+        address.destroy();
+      }
+    }
+  });
+  // インスタンス生成
+  var App = new AppView;
 })
