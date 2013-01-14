@@ -1,4 +1,7 @@
 $(function(){
+  // ===================================================
+  // model class
+  // ===================================================
   // Addressクラスを定義
   var Address = Backbone.Model.extend({
     // デフォルト値
@@ -18,5 +21,18 @@ $(function(){
         return 'Error!';
       }
     }
-  })
+  });
+
+  // ===================================================
+  // collection class
+  // ===================================================
+  // AddressCollectionクラスを定義
+  var AddressCollection = Backbone.Collection.extend({
+    // コレクションで扱うモデル
+    model: Address,
+    // addressbook-sampleというキーでlocalStorageを使う
+    localStorage: new Store('addressbook-sample')
+  });
+  // インスタンスの生成
+  var Addresses = new AddressCollection;
 })
